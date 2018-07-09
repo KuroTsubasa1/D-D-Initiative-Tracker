@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Hello World!</title>
+  <link rel="stylesheet" href="./Bootstrap/css/bootstrap.min.css">
+</head>
+
+<body>
+
+  <div class="container">
+    <div class="col-md-12">
+
+      
+      <!-- All of the Node.js APIs are available in this renderer process. -->
+      <!-- We are using Node.js
+      <script>document.write(process.versions.node)</script>, Chromium
+      <script>document.write(process.versions.chrome)</script>, and Electron
+      <script>document.write(process.versions.electron)</script>.
+      -->
+
+      <!-- Insert this line above script imports  -->
+      <script>if (typeof module === 'object') { window.module = module; module = undefined; }</script>
+
+      <script>
+        // You can also require other files to run in this process
+        require('./renderer.js');
+        const fs = require('fs');
+        const path = require('path');
+        const utils = require('./Utils/utils.js')
+      </script>
+
+      <!-- File writing test-->
+      <!--<script>
+        fs.appendFile('mynewfile1.txt', 'Hello content!', function (err) {
+          if (err) throw err;
+          console.log('Saved!');
+        }); 
+      </script> -->
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Path</th>
+          </tr>
+        </thead>
+        <tbody id="start-point">
+        </tbody>
+      </table>
+
+      <script src="./umd/popper.js"></script>
+      <script src="./umd/tooltip.js"></script>
+      <script src="./jquery/jQuery.js"></script>
+      <script src="./Bootstrap/js/bootstrap.min.js"></script>
+
+      <!-- Insert this line after script imports -->
+      <script>if (window.module) module = window.module;</script>
+
+    </div>
+
+    <div class="col-md-12">
+      <div class="form-group">
+        <a href="./D_D/initiativeTracker.html"><input type="button" value="Next Side" name="" id="next-side" class="form-control btn btn-danger" placeholder="" aria-describedby="helpId"></a>
+      </div>
+    </div>
+  </div>
+
+  <script>utils.filewalker('C:/Users/lharm/Documents/Electron/electron-quick-start', function (err, data) {
+      if (err) {
+        throw err;
+      }
+      // ["c://some-existent-path/file.txt","c:/some-existent-path/subfolder"]
+      //console.log(data);
+      for (i = 0; i < data.length; i++) {
+        $("#start-point").append('<tr><td scope="row"> ' + data[i] + ' </td></tr><tr>');
+      }
+    });
+    </script>
+
+</body>
+
+</html>

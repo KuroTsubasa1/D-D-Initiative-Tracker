@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Hello World!</title>
+    <link rel="stylesheet" href="./../Bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./initiativeTracker.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Initiative Tracker</a>
+        <input type="button" id="add-char-btn" value="Add Charakter" class="btn bnt-default" name="" id="">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample05" aria-controls="navbarsExample05"
+            aria-expanded="false" aria-label="Toggle navigation">
+
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarsExample05">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <!--  <input type="button" id="add-char-btn" value="Add Charakter" class="btn bnt-default" name="" id=""> -->
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="row" id="shadow-start">
+
+        </div>
+
+        <!-- Insert this line above script imports  -->
+        <script>
+            if (typeof module === 'object') {
+                window.module = module;
+                module = undefined;
+            }
+        </script>
+
+        <script>
+            // You can also require other files to run in this process
+            /*
+            require('./../renderer.js');
+            const fs = require('fs');
+            const path = require('path');
+            const utils = require('./../Utils/utils.js')
+            */
+        </script>
+
+        <script src="./../umd/popper.js"></script>
+        <script src="./../umd/tooltip.js"></script>
+        <script type="text/javascript" src="./../jquery/jquery-3.3.1.js"></script>
+        <script src="./../Bootstrap/js/bootstrap.min.js"></script>
+
+        <!-- Insert this line after script imports -->
+        <script>
+            if (window.module) module = window.module;
+        </script>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $('#add-char-btn').click(function () {
+                openNav();
+                $('#cahr_name').focus();
+            });
+        });
+    </script>
+
+    <div id="myNav" class="overlay">
+        <div class="container-fluid">
+
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+            <div class="overlay-content">
+                <div class="col-5 center-horizontal spacer">
+                    <div class="form-group  ">
+                        <input type="text" name="cahr_name" id="cahr_name" class="form-control" placeholder="Charakter Name" aria-describedby="helpId">
+                        <input type="text" name="cahr_hp" id="cahr_hp" class="form-control" placeholder="Health Points" aria-describedby="helpId">
+                        <input type="text" name="cahr_init" id="cahr_init" class="form-control" placeholder="Initiative" aria-describedby="helpId">
+                        <input type="button" value="Create Charakter" name="" id="create-char" class=" btn btn-default form-control" placeholder=""
+                            aria-describedby="helpId">
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        let object_array = [];
+        let object_counter = 0;
+    </script>
+
+    <script>
+        $('#create-char').click(function () {
+            let cahr_name = $('#cahr_name').val();
+            let cahr_max_hp = $('#cahr_hp').val();
+            let cahr_hp = $('#cahr_hp').val();
+            let cahr_init = $('#cahr_init').val();
+
+            var new_char = new Char(cahr_name,cahr_max_hp, cahr_hp, cahr_init);
+            object_array[object_counter] = new_char;
+            console.log(new_char);
+            console.log(object_array[object_counter]);
+            console.log(object_array);
+            let toAddHTML =
+                `<div class="col-3">
+                               <div class="unit">
+                                   <p>Name: ${new_char.name}</p>
+                                   <p id="health_counter${object_counter}" >Health:  ${new_char.hp} HP</p>
+                                   <p>
+                                       <div class="progressbar-border" id="progressbar${object_counter}">
+                                       <div id="healthbar-text${object_counter}">Hp</div>
+                                       </div>
+                                       <input type="button" id="add" value="+" onclick="add_hp(${object_counter})">
+                                       <input type="button" id="sub" value="-" onclick="sub_hp(${object_counter})">
+                                   </p>
+                                   <p>Initiative: ${new_char.init}</p>
+                                </div>
+                            </div>`;
+            $("#shadow-start").append(toAddHTML);
+            $('#healthbar-text' + object_counter).css({"padding-bottom":"20px","background-color": "lightgreen","width": "100%","height": "10px","border-radius": "10px","font-size": "80%","text-align": "center","font-family": "Verdana, Geneva, Tahoma, sans-serif"});
+            //$('#healthbar-text' + object_counter).css({'background-color': 'lightgreen'});
+            //$('#healthbar-text' + object_counter).css(css);
+            object_counter++;
+            closeNav();
+        });
+    </script>
+
+    <script>
+        function openNav() 
+        {
+            document.getElementById("myNav").style.width = "100%";
+        }
+
+        function closeNav() 
+        {
+            document.getElementById("myNav").style.width = "0%";
+        }
+
+        function add_hp(index) 
+        {   
+            object_array[index].hp = Number(object_array[index].hp)
+            object_array[index].hp += 1;
+            $('#healthbar-text' + index).css({"width": calc_percentage(object_array[index].max_hp,object_array[index].hp) +"%"});
+            $('#health_counter' + index).html(`<p id="health_counter${index}" >Health:  ${object_array[index].hp} HP</p>`)
+        }
+
+        function sub_hp(index) 
+        {   
+            object_array[index].hp = Number(object_array[index].hp)
+            object_array[index].hp -= 1;
+            $('#healthbar-text' + index).css({"width": calc_percentage(object_array[index].max_hp,object_array[index].hp) +"%"});
+            $('#health_counter' + index).html(`<p id="health_counter${index}" >Health:  ${object_array[index].hp} HP</p>`)
+        }
+
+        function calc_percentage(max,current)
+        {
+           return current / max * 100;
+        }
+    </script>
+
+    <script>
+        class Char {
+            constructor(name,max_hp, hp, init) {
+                this.name = name;
+                this.max_hp = hp;
+                this.hp = hp;
+                this.init = init;
+                console.log('Created Char Obj')
+            }
+        }
+    </script>
+
+</body>
+
+</html>
